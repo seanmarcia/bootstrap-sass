@@ -341,6 +341,12 @@ if (typeof jQuery === 'undefined') {
     keyboard: true
   }
 
+  Carousel.prototype.sanitizeInput = function (input) {
+    var element = document.createElement('div');
+    element.innerText = input;
+    return element.innerHTML;
+  }
+
   Carousel.prototype.keydown = function (e) {
     if (/input|textarea/i.test(e.target.tagName)) return
     switch (e.which) {
@@ -522,6 +528,9 @@ if (typeof jQuery === 'undefined') {
     var options = $.extend({}, $target.data(), $this.data())
     var slideIndex = $this.attr('data-slide-to')
     if (slideIndex) options.interval = false
+
+    options.slide = $this.sanitizeInput(options.slide)
+    options['data-slide-to'] = $this.sanitizeInput(options['data-slide-to'])
 
     Plugin.call($target, options)
 
